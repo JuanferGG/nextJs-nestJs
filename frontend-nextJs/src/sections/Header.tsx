@@ -29,7 +29,7 @@ export const Header = () => {
           <div className="flex items-center justify-between">
             <Image src={Logo} alt="Logo saas" height={40} width={40} />
             <MenuIcon className="h-5 w-5 md:hidden cursor-pointer" />
-            <nav className="hidden md:flex gap-6 text-black/60 items-center">
+            <nav className="hidden md:flex gap-6 text-black/70 items-center font-bold">
               <a href="#">About</a>
               <a href="#">Features</a>
               <a href="#">Customers</a>

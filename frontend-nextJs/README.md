@@ -1,6 +1,6 @@
 # Landing Page SaaS
 
-![Preview del Proyecto](/public/PreviewPage.png)
+![Preview del Proyecto](public/PreviewPage.png)
 
 Una moderna landing page para SaaS construida con las últimas tecnologías web. Diseñada para ofrecer una experiencia de usuario fluida y atractiva, con animaciones suaves y un diseño responsivo.
 

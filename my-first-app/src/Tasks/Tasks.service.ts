@@ -1,20 +1,24 @@
 import { Injectable } from '@nestjs/common';
 
 export interface User {
-  name: string;
-  age: number;
+    title: string;
+    status: number;
+}
+export interface TypeTask {
+    title: string;
+    status: boolean;
 }
 
 @Injectable()
 export class TasksService {
     //! User[] ---> indica que es un array de objetos de tipo User
-  private tasks: User[] = [];
+  private tasks: TypeTask[] = [];
 
-  getTasks(): User[] {
+  getTasks(): TypeTask[] {
     return this.tasks;
   }
 
-  createTask(task: User) {
+  createTask(task: TypeTask) {
     console.log(task);
     this.tasks.push(task);
     return task;

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Patch, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
 import { TasksService, TypeTask } from './Tasks.service';
 
 @Controller("/tasks")
@@ -14,6 +14,22 @@ export class TasksController {
   getAllTasks() {
     return this.tasksService.getTasks();
   }
+
+  @Get('/GetTask/:id')
+  getTask(@Param('id') id: string) {
+    // console.log(id)
+    return this.tasksService.getTask(parseInt(id)); 
+  }
+
+  // TODO un query es un objeto con los parametros de la url.
+  // ? Ejemplo: http://localhost:3000/tasks/GetTaskQuery?limit=2
+  // ? Ejemplo: URL_ADDRESS:3000/tasks/GetTaskQuery?id=1&name=jose&apellido=ma
+  @Get('/GetTaskQuery')
+  getTaskQuery(@Query() query : any) {
+    console.log(query)
+    return this.tasksService.getTasks();
+  }
+  
   @Get('/GetTest')
   getTest() {
     return this.tasksService.tesTing();

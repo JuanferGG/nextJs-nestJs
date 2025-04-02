@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 export interface User {
     title: string;
     status: number;
 }
 export interface TypeTask {
+    id: number;
     title: string;
     status: boolean;
 }
@@ -19,9 +20,25 @@ export class TasksService {
   }
 
   createTask(task: TypeTask) {
-    console.log(task);
-    this.tasks.push(task);
-    return task;
+    // console.log(task);
+    this.tasks.push({
+      ...task,
+      id: this.tasks.length + 1,
+    });
+    return this.tasks[this.tasks.length - 1];
+  }
+
+  getTask(id: number) {
+    const resultFound = this.tasks.find(task => task.id === id);
+
+    if(!resultFound) {
+      //* Tambien podemos hacer thown new Error('No se encontro la tarea');, pero esto
+      //* termina la ejecucion del programa.
+      // ! o algo asi ---> return { msg: 'No se encontro la tarea' }; pero debe ser asi:
+      return new NotFoundException(`No se encontro la tarea con el id ${id}`)
+    }
+
+    return resultFound;
   }
 
   updateTask() {

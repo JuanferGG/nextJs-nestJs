@@ -1,5 +1,7 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, UsePipes, ValidationPipe } from '@nestjs/common';
 import { TasksService, TypeTask } from './Tasks.service';
+import { CreateTaskDto } from './dto/create-task.dto';
+import { UpdateTaskDto } from './dto/update-task.dto';
 
 @Controller("/tasks")
 export class TasksController {
@@ -8,6 +10,7 @@ export class TasksController {
   // constructor(tasksService: TasksService) {
   //   this.tasksService = tasksService;
   // }
+  
   constructor(private tasksService: TasksService){}
 
   @Get('/GetTasks')
@@ -36,14 +39,15 @@ export class TasksController {
   }
 
   @Post('/PostTask')
-  createTask(@Body() task: TypeTask) {
+  @UsePipes(new ValidationPipe())
+  createTask(@Body() task: CreateTaskDto) {
     return this.tasksService.createTask(task);
   }
 
   // TODO un put actualiza todos los campos, todo el objeto.
   @Put('/PutTask')
-  updateTask() {
-    return this.tasksService.updateTask();
+  updateTask(@Body() task: UpdateTaskDto) {
+    return this.tasksService.updateTask(task);
   }
 
   @Delete('/DeleteTask')

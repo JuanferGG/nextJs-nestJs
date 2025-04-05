@@ -1,6 +1,11 @@
-import { isString } from "class-validator";
+import { IsBoolean, IsString, isString, MinLength } from "class-validator";
 
-export interface UpdateTaskDto {
+export class UpdateTaskDto {
+    
+    @IsString()
+    @MinLength(5)
     title?: string;
+
+    @IsBoolean()
     status?: boolean;
 }

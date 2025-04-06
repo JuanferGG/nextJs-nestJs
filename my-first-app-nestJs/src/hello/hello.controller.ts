@@ -1,6 +1,7 @@
-import { Controller, Get, HttpCode, Param, ParseBoolPipe, ParseIntPipe, Query, Req, Res } from '@nestjs/common';
+import { Controller, Get, HttpCode, Param, ParseBoolPipe, ParseIntPipe, Query, Req, Res, UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { ValidateUserPipe } from './pipes/validate-user/validate-user.pipe';
+import { AuthGuard } from './guards/auth/auth.guard';
 
 @Controller('/hello') //! -------> si se tiene algo aqui, al inicio se pone el nombre de la ruta
 export class HelloController {
@@ -24,14 +25,15 @@ export class HelloController {
 
     @Get('/active/:status')
     isUserActive(@Param('status', ParseBoolPipe) status: boolean) {
-        console.log(typeof status)
+        // console.log(typeof status)
         return status
     }
 
     @Get('/greet')
+    @UseGuards(AuthGuard)
     getGreet(@Query(ValidateUserPipe) query: { name: string, age: number }) {
-        console.log(typeof query.name)
-        console.log(typeof query.age)
+        // console.log(typeof query.name)
+        // console.log(typeof query.age)
         return {
             msg: `Hello ${query.name} you are ${query.age} years old`
         }

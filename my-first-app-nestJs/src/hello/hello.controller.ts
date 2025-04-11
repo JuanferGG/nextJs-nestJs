@@ -2,11 +2,14 @@ import { Controller, Get, HttpCode, Param, ParseBoolPipe, ParseIntPipe, Query, R
 import { Request, Response } from 'express';
 import { ValidateUserPipe } from './pipes/validate-user/validate-user.pipe';
 import { AuthGuard } from './guards/auth/auth.guard';
+import { ApiOperation, ApiResponse } from '@nestjs/swagger'
 
 @Controller('/hello') //! -------> si se tiene algo aqui, al inicio se pone el nombre de la ruta
 export class HelloController {
 
     @Get('/saludar')
+    @ApiOperation({ summary: 'Funcion que solo saluda' })
+    @ApiResponse({ status: 200, description: 'Funcion que retorna un object { msg: "Hello World!" }' })
     getHello(@Req() req: Request, @Res() res: Response) {
         console.log(req.url)
         res.status(200).json({ msg: 'Hello World!' })

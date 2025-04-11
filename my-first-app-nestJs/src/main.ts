@@ -20,6 +20,10 @@ async function bootstrap() {
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
 
+  app.enableCors({
+    // origin: '' // TODO --> Aqui se puede poner el dominio de la app que se quiere conectar y q solo pueda acceder a la API,
+  });
+
   await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

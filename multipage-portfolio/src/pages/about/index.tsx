@@ -86,5 +86,5 @@ const aboutData = [
   ];
 
 export default function index() {
-  return <div>About</div>;
+  return <div key={10}>About</div>;
 }

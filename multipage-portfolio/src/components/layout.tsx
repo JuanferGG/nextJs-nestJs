@@ -16,7 +16,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <div className={`page bg-site bg-blue-900 text-white bg-cover bg-no-repeat ${sora.variable} font-sora relative`}>
+    <div className={`page bg-site bg-[#281e4b] text-white bg-cover bg-no-repeat ${sora.variable} font-sora relative`}>
         <TopLeftImg />
         <Nav />
         <Header/>

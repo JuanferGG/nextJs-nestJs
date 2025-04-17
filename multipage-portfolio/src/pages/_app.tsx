@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <Layout>
       <AnimatePresence mode="wait" initial={false}>
-        <motion.div key={router.route} style={{ height: '100%' }}>
+        <motion.div key={router.route} style={{ height: "100%" }}>
           <Transition />
           <Component {...pageProps} />
         </motion.div>

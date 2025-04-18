@@ -6,7 +6,7 @@ import { HiArrowRight } from "react-icons/hi2";
 
 export default function ProjectsBtn() {
   return (
-    <div className="mx-auto xl:mx-0">
+    <div className="mx-auto xl:mx-0 z-20">
       <Link href={"/work"} className="group relative w-[185px] h-[185px] flex justify-center items-center ">
         <Image
           className="animate-spin [animation-duration:10s] w-full h-full max-w-[141px] max-h-[148px]"

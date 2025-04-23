@@ -13,17 +13,37 @@ export default function index() {
         <div className="flex flex-col xl:flex-row gap-x-8">
           {/* text */}
           <div className="text-center flex xl:w-[35vw] flex-col lg:text-left lg:ml-20 mb-4">
-            <h2 className="h2 xl:mt-8">
+            <motion.h2
+              variants={fadeIn("up", 0.2)}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              className="h2 xl:mt-8"
+            >
               My services<span className="text-red-500">.</span>
-            </h2>
-            <p className="mb-4 max-w-[400px] mx-auto lg:mx-0">
+            </motion.h2>
+            <motion.p
+              variants={fadeIn("up", 0.6)}
+              initial="hidden"
+              animate="show"
+              exit="hidden"
+              className="mb-4 max-w-[400px] mx-auto lg:mx-0"
+            >
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Hic ab
               provident fugiat possimus expedita officia qui ullam iusto optio
               veniam!
-            </p>
+            </motion.p>
           </div>
+          <motion.div
+            variants={fadeIn("down", .8)}
+            initial="hidden"
+            animate="show"
+            exit="hidden"
+            className="w-full xl:max-w-[65%]"
+          >
+            <ServiceSlider />
+          </motion.div>
           {/* slider */}
-          <ServiceSlider />
         </div>
       </div>
       <Bulb />

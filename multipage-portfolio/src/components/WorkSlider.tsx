@@ -4,50 +4,9 @@ import "swiper/css";
 import "swiper/css/free-mode";
 import "swiper/css/pagination";
 
-import {
-  RxCrop,
-  RxPencil2,
-  RxDesktop,
-  RxReader,
-  RxRocket,
-} from "react-icons/rx";
-
 import { Pagination } from "swiper/modules";
 import { BsArrowRight } from "react-icons/bs";
 import Image from "next/image";
-
-export const servicesData = [
-  {
-    icon: <RxCrop />,
-    title: "Branding",
-    description:
-      "I design and develop websites that are fast, responsive, and user-friendly. I use the latest technologies to ensure that my websites are optimized for search engines and mobile devices.",
-  },
-  {
-    icon: <RxPencil2 />,
-    title: "Desing",
-    description:
-      "I design and develop websites that are fast, responsive, and user-friendly. I use the latest technologies to ensure that my websites are optimized for search engines and mobile devices.",
-  },
-  {
-    icon: <RxDesktop />,
-    title: "Development",
-    description:
-      "I design and develop websites that are fast, responsive, and user-friendly. I use the latest technologies to ensure that my websites are optimized for search engines and mobile devices.",
-  },
-  {
-    icon: <RxReader />,
-    title: "Copywriting",
-    description:
-      "I design and develop websites that are fast, responsive, and user-friendly. I use the latest technologies to ensure that my websites are optimized for search engines and mobile devices.",
-  },
-  {
-    icon: <RxRocket />,
-    title: "SEO",
-    description:
-      "I design and develop websites that are fast, responsive, and user-friendly. I use the latest technologies to ensure that my websites are optimized for search engines and mobile devices.",
-  },
-];
 
 const workSlides = {
   slides: [
@@ -102,7 +61,7 @@ export default function WorkSlider() {
         clickable: true,
       }}
       modules={[Pagination]}
-      className="h-[240px] sm:h-[480px]"
+      className="h-[280px] sm:h-[480px] max-w-[80vw]"
     >
       {workSlides.slides.map((slide, index) => {
         return (

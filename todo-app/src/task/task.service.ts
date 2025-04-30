@@ -9,13 +9,19 @@ import { Task } from './schemas/task.schema';
 export class TaskService {
   constructor(@InjectModel(Task.name) private TaskModel: Model<Task>) {}
 
-  async create(createTaskDto: CreateTaskDto): Promise<Task> {
+  async create(
+    createTaskDto: CreateTaskDto,
+  ): Promise<{ message: string; task: Task }> {
     const createdTask = new this.TaskModel(createTaskDto);
-    return createdTask.save();
+    const savedTask = await createdTask.save();
+    return {
+      message: 'Tarea creada exitosamente',
+      task: savedTask,
+    };
   }
 
-  findAll() {
-    return `This action returns all task`;
+  async findAll() {
+    return await this.TaskModel.find().exec();
   }
 
   findOne(id: number) {

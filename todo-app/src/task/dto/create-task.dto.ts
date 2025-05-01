@@ -33,6 +33,7 @@ export class CreateTaskDto {
   @ApiProperty({
     description: 'The priority of the task',
     default: 'low',
+    enum: ['low', 'medium', 'high'],
   })
   @IsString()
   @IsOptional()

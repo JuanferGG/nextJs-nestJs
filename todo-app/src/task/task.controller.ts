@@ -16,6 +16,7 @@ import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 export class TaskController {
   constructor(private readonly taskService: TaskService) {}
 
+  // TODO: Crear una tarea
   @ApiOperation({ summary: 'Crear una tarea' })
   @ApiResponse({
     status: 201,
@@ -33,6 +34,7 @@ export class TaskController {
     return this.taskService.create(createTaskDto);
   }
 
+  // TODO: Obtener todas las tareas
   @ApiOperation({ summary: 'Obtiene Todas las tareas' })
   @ApiResponse({
     status: 200,
@@ -57,18 +59,24 @@ export class TaskController {
     return this.taskService.findAll();
   }
 
+  // TODO: Obtener una tarea por id
+  @ApiOperation({ summary: 'Obtiene una tarea por id' })
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.taskService.findOne(+id);
+    return this.taskService.findOne(id);
   }
 
+  // TODO: Actualizar una tarea por id
+  @ApiOperation({ summary: 'Actualiza toda la tarea mediante id' })
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.taskService.update(+id, updateTaskDto);
+    return this.taskService.update(id, updateTaskDto);
   }
 
+  // TODO: Eliminar una tarea por id
+  @ApiOperation({ summary: 'Elinima una tarea por id' })
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.taskService.remove(+id);
+    return this.taskService.remove(id);
   }
 }

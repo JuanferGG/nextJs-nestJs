@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
 import { Task } from './schemas/task.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { isValidObjectId, Model } from 'mongoose';
 
 @Injectable()
 export class TaskService {
   constructor(@InjectModel(Task.name) private TaskModel: Model<Task>) {}
 
+  // TODO: Crear una tarea
   async create(
     createTaskDto: CreateTaskDto,
   ): Promise<{ message: string; task: Task }> {
@@ -20,19 +21,51 @@ export class TaskService {
     };
   }
 
+  // TODO: Obtener todas las tareas
   async findAll() {
     return await this.TaskModel.find().exec();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} task`;
+  // TODO: Obtener una tarea por id
+  async findOne(id: string) {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Formato de id inválido');
+    }
+    const TaskFound = await this.TaskModel.findById(id);
+
+    if (!TaskFound) {
+      throw new BadRequestException('Tarea no encontrada');
+    }
+    return TaskFound;
   }
 
-  update(id: number, updateTaskDto: UpdateTaskDto) {
-    return `This action updates a #${id} task`;
+  // TODO: Actualizar una tarea por id
+  async update(id: string, updateTaskDto: UpdateTaskDto) {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Formato de id inválido');
+    }
+
+    const TaskFound = await this.TaskModel.findByIdAndUpdate(id, updateTaskDto);
+
+    if (!TaskFound) {
+      throw new BadRequestException('Tarea no encontrada');
+    }
+
+    return { message: 'Tarea actualizada exitosamente', TaskFound: TaskFound };
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} task`;
+  // TODO: Eliminar una tarea por id
+  async remove(id: string) {
+    if (!isValidObjectId(id)) {
+      throw new BadRequestException('Formato de id inválido');
+    }
+
+    const TaskFound = await this.TaskModel.findByIdAndDelete(id);
+
+    if (!TaskFound) {
+      throw new BadRequestException('Tarea no encontrada');
+    }
+
+    return { message: 'Tarea eliminada exitosamente' };
   }
 }

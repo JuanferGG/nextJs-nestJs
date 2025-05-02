@@ -5,6 +5,7 @@ export class CreateTaskDto {
   // TODO Titulo de la tarea
   @ApiProperty({
     description: 'The title of the task',
+    default: 'Titulo por defecto',
     minLength: 4,
   })
   @IsString()
@@ -14,6 +15,7 @@ export class CreateTaskDto {
   // TODO Descripcion de la tarea
   @ApiProperty({
     description: 'The description of the task',
+    default: 'Descripcion por defecto',
     minLength: 10,
   })
   @IsString()
@@ -27,7 +29,7 @@ export class CreateTaskDto {
   })
   @IsOptional()
   @IsBoolean()
-  status: boolean = true;
+  status?: boolean = true;
 
   // TODO Prioridad de la tarea
   @ApiProperty({
@@ -37,5 +39,14 @@ export class CreateTaskDto {
   })
   @IsString()
   @IsOptional()
-  priority: 'low' | 'medium' | 'high' = 'low';
+  priority?: 'low' | 'medium' | 'high' = 'low';
+
+  // TODO Imagen de la tarea
+  @ApiProperty({
+    description: 'The image of the task',
+    default: 'Imagen por defecto',
+  })
+  @IsOptional()
+  // @IsOptional()
+  image?: Express.Multer.File;
 }

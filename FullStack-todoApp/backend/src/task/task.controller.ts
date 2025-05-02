@@ -6,11 +6,16 @@ import {
   Patch,
   Param,
   Delete,
+  UseInterceptors,
+  UploadedFile,
+  Bind,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { multerConfig } from './config/multer.config';
 
 @Controller('task')
 export class TaskController {
@@ -30,8 +35,12 @@ export class TaskController {
     },
   })
   @Post()
-  create(@Body() createTaskDto: CreateTaskDto) {
-    return this.taskService.create(createTaskDto);
+  @UseInterceptors(FileInterceptor('image', multerConfig))
+  create(
+    @Body() createTaskDto: CreateTaskDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    return this.taskService.create(createTaskDto, image);
   }
 
   // TODO: Obtener todas las tareas

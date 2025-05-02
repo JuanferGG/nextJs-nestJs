@@ -21,6 +21,9 @@ export class Task {
     default: 'low',
   })
   priority: 'low' | 'medium' | 'high';
+
+  @Prop()
+  image: string;
 }
 
 export const TaskSchema = SchemaFactory.createForClass(Task);

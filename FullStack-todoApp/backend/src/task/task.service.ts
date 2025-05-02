@@ -12,8 +12,12 @@ export class TaskService {
   // TODO: Crear una tarea
   async create(
     createTaskDto: CreateTaskDto,
+    image?: Express.Multer.File,
   ): Promise<{ message: string; task: Task }> {
-    const createdTask = new this.TaskModel(createTaskDto);
+    const createdTask = new this.TaskModel({
+      ...createTaskDto,
+      image: image ? `/uploads/tasks/${image.filename}` : undefined,
+    });
     const savedTask = await createdTask.save();
     return {
       message: 'Tarea creada exitosamente',

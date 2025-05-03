@@ -16,7 +16,7 @@ export class TaskService {
   ): Promise<{ message: string; task: Task }> {
     const createdTask = new this.TaskModel({
       ...createTaskDto,
-      image: image ? `/uploads/tasks/${image.filename}` : undefined,
+      image: image ? `/uploads/tasks/${image.filename}` : '/uploads/tasks/default_task.jpg',
     });
     const savedTask = await createdTask.save();
     return {

@@ -44,7 +44,7 @@ export class CreateTaskDto {
   // TODO Imagen de la tarea
   @ApiProperty({
     description: 'The image of the task',
-    default: 'Imagen por defecto',
+    default: '/uploads/tasks/default_task.jpg',
   })
   @IsOptional()
   // @IsOptional()

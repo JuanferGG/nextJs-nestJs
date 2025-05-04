@@ -11,6 +11,17 @@ import { join } from 'path';
 export class TaskService {
   constructor(@InjectModel(Task.name) private TaskModel: Model<Task>) {}
 
+  private async deleteImage(imagePath: string): Promise<void> {
+    if (imagePath && imagePath !== '/uploads/tasks/default_task.jpg') {
+      try {
+        const fullPath = join(process.cwd(), imagePath);
+        await unlink(fullPath);
+      } catch (error) {
+        console.error('Error al eliminar la imagen:', error);
+      }
+    }
+  }
+
   // TODO: Crear una tarea
   async create(
     createTaskDto: CreateTaskDto,
@@ -60,17 +71,12 @@ export class TaskService {
       throw new BadRequestException('Tarea no encontrada');
     }
 
-    // Si hay una nueva imagen y la tarea actual tiene una imagen que no es la predeterminada
-    if (image && existingTask.image && existingTask.image !== '/uploads/tasks/default_task.jpg') {
-      try {
-        const imagePath = join(process.cwd(), existingTask.image);
-        await unlink(imagePath);
-      } catch (error) {
-        console.error('Error al eliminar la imagen anterior:', error);
-      }
+    // TODO: Si hay una nueva imagen, eliminar la imagen anterior
+    if (image) {
+      await this.deleteImage(existingTask.image);
     }
 
-    // Actualizar la tarea con los nuevos datos y la nueva imagen si existe
+    // TODO Actualizar la tarea con los nuevos datos y la nueva imagen si existe
     const updatedTask = await this.TaskModel.findByIdAndUpdate(
       id,
       {
@@ -98,15 +104,8 @@ export class TaskService {
       throw new BadRequestException('Tarea no encontrada');
     }
 
-    // Eliminar la imagen si existe y no es la imagen por defecto
-    if (TaskFound.image && TaskFound.image !== '/uploads/tasks/default_task.jpg') {
-      try {
-        const imagePath = join(process.cwd(), TaskFound.image);
-        await unlink(imagePath);
-      } catch (error) {
-        console.error('Error al eliminar la imagen:', error);
-      }
-    }
+    // TODO: Eliminar la imagen asociada
+    await this.deleteImage(TaskFound.image);
 
     await this.TaskModel.findByIdAndDelete(id);
 

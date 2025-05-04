@@ -4,6 +4,8 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { Task } from './schemas/task.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { isValidObjectId, Model } from 'mongoose';
+import { unlink } from 'fs/promises';
+import { join } from 'path';
 
 @Injectable()
 export class TaskService {
@@ -44,18 +46,44 @@ export class TaskService {
   }
 
   // TODO: Actualizar una tarea por id
-  async update(id: string, updateTaskDto: UpdateTaskDto) {
+  async update(
+    id: string,
+    updateTaskDto: UpdateTaskDto,
+    image?: Express.Multer.File,
+  ) {
     if (!isValidObjectId(id)) {
       throw new BadRequestException('Formato de id inválido');
     }
 
-    const TaskFound = await this.TaskModel.findByIdAndUpdate(id, updateTaskDto);
-
-    if (!TaskFound) {
+    const existingTask = await this.TaskModel.findById(id);
+    if (!existingTask) {
       throw new BadRequestException('Tarea no encontrada');
     }
 
-    return { message: 'Tarea actualizada exitosamente', TaskFound: TaskFound };
+    // Si hay una nueva imagen y la tarea actual tiene una imagen que no es la predeterminada
+    if (image && existingTask.image && existingTask.image !== '/uploads/tasks/default_task.jpg') {
+      try {
+        const imagePath = join(process.cwd(), existingTask.image);
+        await unlink(imagePath);
+      } catch (error) {
+        console.error('Error al eliminar la imagen anterior:', error);
+      }
+    }
+
+    // Actualizar la tarea con los nuevos datos y la nueva imagen si existe
+    const updatedTask = await this.TaskModel.findByIdAndUpdate(
+      id,
+      {
+        ...updateTaskDto,
+        image: image ? `/uploads/tasks/${image.filename}` : existingTask.image,
+      },
+      { new: true },
+    );
+
+    return { 
+      message: 'Tarea actualizada exitosamente', 
+      task: updatedTask 
+    };
   }
 
   // TODO: Eliminar una tarea por id
@@ -64,11 +92,23 @@ export class TaskService {
       throw new BadRequestException('Formato de id inválido');
     }
 
-    const TaskFound = await this.TaskModel.findByIdAndDelete(id);
+    const TaskFound = await this.TaskModel.findById(id);
 
     if (!TaskFound) {
       throw new BadRequestException('Tarea no encontrada');
     }
+
+    // Eliminar la imagen si existe y no es la imagen por defecto
+    if (TaskFound.image && TaskFound.image !== '/uploads/tasks/default_task.jpg') {
+      try {
+        const imagePath = join(process.cwd(), TaskFound.image);
+        await unlink(imagePath);
+      } catch (error) {
+        console.error('Error al eliminar la imagen:', error);
+      }
+    }
+
+    await this.TaskModel.findByIdAndDelete(id);
 
     return { message: 'Tarea eliminada exitosamente' };
   }

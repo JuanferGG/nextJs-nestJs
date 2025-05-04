@@ -1,6 +1,7 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { CreateTaskDto } from './create-task.dto';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsOptional } from 'class-validator';
 
 export class UpdateTaskDto extends PartialType(CreateTaskDto) {
   @ApiProperty({
@@ -32,4 +33,11 @@ export class UpdateTaskDto extends PartialType(CreateTaskDto) {
     required: false,
   })
   priority?: 'low' | 'medium' | 'high' | undefined;
+  @ApiProperty({
+    description: 'The image of the task',
+    default: '/uploads/tasks/default_task.jpg',
+  })
+  @IsOptional()
+  // @IsOptional()
+  image?: Express.Multer.File;
 }

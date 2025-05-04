@@ -77,8 +77,13 @@ export class TaskController {
   // TODO: Actualizar una tarea por id
   @ApiOperation({ summary: 'Actualiza toda la tarea mediante id' })
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTaskDto: UpdateTaskDto) {
-    return this.taskService.update(id, updateTaskDto);
+  @UseInterceptors(FileInterceptor('image', multerConfig))
+  update(
+    @Param('id') id: string,
+    @Body() updateTaskDto: UpdateTaskDto,
+    @UploadedFile() image: Express.Multer.File,
+  ) {
+    return this.taskService.update(id, updateTaskDto, image);
   }
 
   // TODO: Eliminar una tarea por id

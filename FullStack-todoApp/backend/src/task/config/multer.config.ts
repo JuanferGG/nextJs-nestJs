@@ -1,3 +1,4 @@
+import { BadRequestException } from '@nestjs/common';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 
@@ -11,9 +12,18 @@ export const multerConfig = {
     },
   }),
   fileFilter: (req, file, callback) => {
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-      return callback(new Error('Solo se permiten archivos de imagen'), false);
+    // Validar el tipo MIME del archivo
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedMimes.includes(file.mimetype)) {
+      return callback(new BadRequestException('El archivo debe ser una imagen (JPG, PNG o GIF)'), false);
     }
+
+    // Validar la extensión del archivo
+    const allowedExtensions = /\.(jpg|jpeg|png|gif)$/;
+    if (!file.originalname.match(allowedExtensions)) {
+      return callback(new BadRequestException('La extensión del archivo debe ser .jpg, .jpeg, .png o .gif'), false);
+    }
+
     callback(null, true);
   },
   limits: {

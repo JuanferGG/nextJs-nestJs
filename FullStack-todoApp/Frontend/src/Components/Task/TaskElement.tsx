@@ -9,7 +9,7 @@ export default function TaskElement({ task }: { task: Task }) {
         <img
           src={`${import.meta.env.VITE_API_URL}${image}`}
           alt="img-task"
-          className="w-full h-full object-cover hover:scale-180 transition-transform duration-300"
+          className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
         />
       </div>
       <div className="p-5 flex flex-col gap-3">

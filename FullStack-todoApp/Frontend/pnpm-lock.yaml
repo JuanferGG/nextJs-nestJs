@@ -20,6 +20,9 @@ importers:
       axios:
         specifier: ^1.9.0
         version: 1.9.0
+      notyf:
+        specifier: ^3.10.0
+        version: 3.10.0
       react:
         specifier: ^19.0.0
         version: 19.1.0
@@ -1157,6 +1160,9 @@ packages:
 
   natural-compare@1.4.0:
     resolution: {integrity: sha512-OWND8ei3VtNC9h7V60qff3SVobHr996CTwgxubgyQYEpg290h9J0buyECNNJexkFm5sOajh5G116RYA1c8ZMSw==}
+
+  notyf@3.10.0:
+    resolution: {integrity: sha512-Mtnp+0qiZxgrH+TzVlzhWyZceHdAZ/UWK0/ju9U0HQeDpap1mZ8cC7H5wSI5mwgni6yeAjaxsTw0sbMK+aSuHw==}
 
   optionator@0.9.4:
     resolution: {integrity: sha512-6IpQ7mKUxRcZNLIObR0hz7lxsapSSIYNZJwXPGeF0mTVqGKFIXj1DQcMoT22S3ROcLyY/rz0PWaWZ9ayWmad9g==}
@@ -2335,6 +2341,8 @@ snapshots:
   nanoid@3.3.11: {}
 
   natural-compare@1.4.0: {}
+
+  notyf@3.10.0: {}
 
   optionator@0.9.4:
     dependencies:

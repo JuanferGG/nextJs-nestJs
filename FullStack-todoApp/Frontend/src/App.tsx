@@ -1,4 +1,5 @@
 import "./App.css";
+import 'notyf/notyf.min.css';
 import TaskList from "./Components/Task/TaskList";
 
 function App() {

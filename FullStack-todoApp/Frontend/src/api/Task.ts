@@ -20,3 +20,17 @@ export const createTask = async (task: Task) => {
       throw error;
     });
 }
+
+// export const createTask = async (formData: FormData) => {
+//   try {
+//     const response = await axios.post("/task", formData, {
+//       headers: {
+//         "Content-Type": "multipart/form-data",
+//       },
+//     });
+//     return response.data;
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+

@@ -1,5 +1,6 @@
 import { IsBoolean, IsOptional, IsString, MinLength } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { Transform } from 'class-transformer';
 
 export class CreateTaskDto {
   // TODO Titulo de la tarea
@@ -29,6 +30,11 @@ export class CreateTaskDto {
   })
   @IsOptional()
   @IsBoolean()
+  @Transform(({ value }) =>{
+    if (value === 'true') return true;
+    if (value === 'false') return false;
+    return value;
+  })
   status?: boolean = true;
 
   // TODO Prioridad de la tarea

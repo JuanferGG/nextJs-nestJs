@@ -1,4 +1,4 @@
-import { Task } from "../interfaces/Task";
+// import { Task } from "../interfaces/Task";
 import axios from "./axios";
 
 export const getTasks = async () => {
@@ -11,26 +11,15 @@ export const getTasks = async () => {
     });
 };
 
-export const createTask = async (task: Task) => {
-  return axios
-    .post("/task", task)
-    .then((res) => res.data)
-    .catch((error) => {
-      console.log(error);
-      throw error;
+export const createTask = async (formData: FormData) => {
+  try {
+    const response = await axios.post("/task", formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     });
-}
-
-// export const createTask = async (formData: FormData) => {
-//   try {
-//     const response = await axios.post("/task", formData, {
-//       headers: {
-//         "Content-Type": "multipart/form-data",
-//       },
-//     });
-//     return response.data;
-//   } catch (error) {
-//     console.log(error);
-//   }
-// }
-
+    return response.data;
+  } catch (error) {
+    return console.log(error);
+  }
+};

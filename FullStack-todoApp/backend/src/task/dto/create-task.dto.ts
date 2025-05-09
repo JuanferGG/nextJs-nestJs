@@ -54,5 +54,5 @@ export class CreateTaskDto {
   })
   @IsOptional()
   // @IsOptional()
-  image?: Express.Multer.File;
+  image?: Express.Multer.File | string;
 }

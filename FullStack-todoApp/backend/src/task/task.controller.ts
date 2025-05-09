@@ -8,6 +8,7 @@ import {
   Delete,
   UseInterceptors,
   UploadedFile,
+  BadRequestException,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -15,6 +16,9 @@ import { UpdateTaskDto } from './dto/update-task.dto';
 import { ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from './config/multer.config';
+import { plainToInstance } from 'class-transformer';
+import { validate } from 'class-validator';
+import { unlink } from 'fs/promises';
 
 @Controller('task')
 export class TaskController {
@@ -35,11 +39,30 @@ export class TaskController {
   })
   @Post()
   @UseInterceptors(FileInterceptor('image', multerConfig))
-  create(
-    @Body() createTaskDto: CreateTaskDto,
-    @UploadedFile() image: Express.Multer.File,
-  ) {
-    return this.taskService.create(createTaskDto, image);
+  async create(@Body() body: any, @UploadedFile() image: Express.Multer.File) {
+    const dto = plainToInstance(CreateTaskDto, body);
+    const errors = await validate(dto);
+
+    if (errors.length > 0) {
+      // ⚠️ Si hay errores, y Multer ya subió el archivo, lo borramos (opcional)
+      if (image?.path) {
+        // Usar 'fs' para eliminar la imagen subida por error
+        await unlink(image.path);
+      }
+
+      const formattedErrors = errors.flatMap((err) => {
+        return Object.entries(err.constraints || {}).map(([key, msg]) => ({
+          field: err.property,
+          type: key,
+          message: msg,
+        }));
+      });
+
+      throw new BadRequestException(formattedErrors);
+    }
+
+    // ✅ Solo llegamos aquí si todo está validado correctamente
+    return this.taskService.create(dto, image);
   }
 
   // TODO: Obtener todas las tareas

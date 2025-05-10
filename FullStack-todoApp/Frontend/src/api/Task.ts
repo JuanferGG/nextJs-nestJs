@@ -20,6 +20,7 @@ export const createTask = async (formData: FormData) => {
     });
     return response.data;
   } catch (error) {
-    return console.log(error);
+    // console.log(error);
+    return Promise.reject(error);
   }
 };

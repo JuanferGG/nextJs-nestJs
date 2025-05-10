@@ -18,7 +18,7 @@ export const useCreateTask = () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
     onError: (error) => {
-      console.log("Error al crear la orden:", error);
+      throw error;
     },
   });
 };

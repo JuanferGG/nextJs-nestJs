@@ -1,28 +1,19 @@
 import { useState } from "react";
-import { Notyf } from "notyf";
 import {
   Dialog,
   DialogBackdrop,
   DialogPanel,
   DialogTitle,
 } from "@headlessui/react";
-import { createTask } from "../../api/Task";
+import { useCreateTask } from "../../Hooks/useTask";
 import { CiCirclePlus, CiGrid32 } from "react-icons/ci";
+import { UiNotyf } from "../UI/Notyf";
 
 interface TaskModalProps {
   onTaskCreated: () => void;
 }
 
 export default function TaskModal({ onTaskCreated }: TaskModalProps) {
-  const notyf = new Notyf({
-    duration: 2000,
-    position: {
-      x: "left",
-      y: "bottom",
-    },
-    dismissible: true,
-  });
-
   const [open, setOpen] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
@@ -31,6 +22,8 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
     priority: "low",
     image: null as File | null,
   });
+
+  const { mutate } = useCreateTask();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -44,14 +37,24 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
       data.append("image", formData.image);
     }
 
-    try {
-      await createTask(data);
-      setOpen(false);
-      onTaskCreated();
-      notyf.success("Tarea creada con éxito");
-    } catch (error) {
-      console.error("Error al crear la tarea:", error);
-    }
+    mutate(data, {
+      onSuccess: () => {
+        setOpen(false);
+        UiNotyf.success("Tarea creada correctamente");
+        onTaskCreated();
+      },
+      onError: (error) => {
+        setOpen(true);
+        error.response.data.message.map((err) => UiNotyf.error(err.message));
+        setFormData({
+          title: "",
+          description: "",
+          status: false,
+          priority: "low",
+          image: null as File | null,
+        });
+      },
+    });
   };
 
   const handleImageInput = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +66,6 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
     <>
       <Dialog open={open} onClose={setOpen} className="relative z-10">
         <DialogBackdrop className="fixed inset-0 bg-gray-500/75" />
-
         <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
           <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
             <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">

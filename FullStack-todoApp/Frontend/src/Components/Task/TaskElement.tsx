@@ -4,7 +4,10 @@ export default function TaskElement({ task }: { task: Task }) {
   const { title, description, status, priority, image } = task;
 
   return (
-    <div className="flex flex-col flex-nowrap sm:w-full lg:w-[300px] shadow-lg hover:shadow-xl transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer bg-white">
+    <div
+      className="flex flex-col flex-nowrap sm:w-full lg:w-[300px] shadow-lg hover:shadow-xl 
+        transition-all duration-300 rounded-2xl overflow-hidden cursor-pointer bg-white"
+    >
       <div className="relative h-48 w-full overflow-hidden">
         <img
           src={`${import.meta.env.VITE_API_URL}${image}`}

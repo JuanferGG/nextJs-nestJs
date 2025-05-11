@@ -24,3 +24,13 @@ export const createTask = async (formData: FormData) => {
     return Promise.reject(error);
   }
 };
+
+export const deleteTask = async (id: string) => {
+  return axios
+    .delete(`/task/${id}`)
+    .then((res) => res.data)
+   .catch((error) => {
+      console.log(error);
+      throw error;
+    });
+}

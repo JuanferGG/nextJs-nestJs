@@ -42,10 +42,6 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
         setOpen(false);
         UiNotyf.success("Tarea creada correctamente");
         onTaskCreated();
-      },
-      onError: (error) => {
-        setOpen(true);
-        error.response.data.message.map((err) => UiNotyf.error(err.message));
         setFormData({
           title: "",
           description: "",
@@ -53,6 +49,14 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
           priority: "low",
           image: null as File | null,
         });
+      },
+      onError: (error) => {
+        setOpen(true);
+        if (Array.isArray(error.response.data.message)) {
+          error.response.data.message.map((err) => UiNotyf.error(err.message));
+        } else if (error.response.data.message) {
+          UiNotyf.error(error.response.data.message);
+        }
       },
     });
   };

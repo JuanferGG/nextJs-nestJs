@@ -3,11 +3,13 @@ import type { Task } from "../../interfaces/Task";
 import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useDeleteTask } from "../../Hooks/useTask";
 import { UiNotyf } from "../UI/Notyf";
+import TaskModalView from "./TaskModalView";
 
 export default function TaskElement({ task }: { task: Task }) {
   const { mutate: deleteProduct } = useDeleteTask();
   const { _id, title, description, status, priority, image } = task;
   const [isOpen, setIsOpen] = useState(false);
+  const [openView, setOpenView] = useState(false);
 
   const handleDelete = () => {
     deleteProduct(_id, {
@@ -18,15 +20,15 @@ export default function TaskElement({ task }: { task: Task }) {
       onError: (error) => {
         console.log("Error al eliminar la tarea", error);
         UiNotyf.error("Error al eliminar la tarea");
-      }
-    })
-  }
+      },
+    });
+  };
 
   return (
     <>
       <div
         className="flex flex-col flex-nowrap sm:w-full lg:w-[300px] shadow-lg hover:shadow-xl 
-        transition-all duration-300 rounded-2xl overflow-hidden bg-white min-h-[430px] relative"
+        transition-all duration-300 rounded-2xl overflow-hidden bg-white min-h-[450px] relative"
       >
         <div className="relative h-48 w-full overflow-hidden">
           <img
@@ -74,6 +76,7 @@ export default function TaskElement({ task }: { task: Task }) {
             <button
               className="cursor-pointer px-4 py-2 font-semibold bg-green-500/80
            text-white rounded-2xl hover:bg-green-600 transition-colors duration-300"
+              onClick={() => setOpenView(true)}
             >
               Ver
             </button>
@@ -93,14 +96,12 @@ export default function TaskElement({ task }: { task: Task }) {
           </div>
         </div>
       </div>
+      { /* TODO: Modal Delete */ }
       <Dialog open={isOpen} onClose={setIsOpen} className="relative z-10">
-        <DialogBackdrop
-          transition
-          className="fixed inset-0 bg-gray-500/75"
-        />
-        <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center sm:items-center sm:p-0">
-            <DialogPanel className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
+        <DialogBackdrop transition className="fixed inset-0 bg-gray-500/75" />
+        <div className="modalPosition">
+          <div className="modalContainer">
+            <DialogPanel className="dialogPanel">
               <div className="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                 <h2 className="text-4xl font-bold text-gray-800 mb-2">
                   Eliminar Tarea
@@ -109,12 +110,14 @@ export default function TaskElement({ task }: { task: Task }) {
                   ¿Estas seguro que deseas eliminar esta tarea?
                 </p>
                 <div className="w-full flex mt-5 justify-center gap-3">
-                  <button className="cursor-pointer bg-blue-500 text-white px-6 py-2 rounded-xl min-w-[100px]"
+                  <button
+                    className="cursor-pointer bg-blue-500 text-white px-6 py-2 rounded-xl min-w-[100px]"
                     onClick={handleDelete}
                   >
                     Si
                   </button>
-                  <button className="cursor-pointer bg-red-500 text-white px-6 py-2 rounded-xl min-w-[100px]"
+                  <button
+                    className="cursor-pointer bg-red-500 text-white px-6 py-2 rounded-xl min-w-[100px]"
                     onClick={() => setIsOpen(false)}
                   >
                     No
@@ -125,6 +128,8 @@ export default function TaskElement({ task }: { task: Task }) {
           </div>
         </div>
       </Dialog>
+      {/* TODO: Modal View */}
+      <TaskModalView IsOpenView={openView} setOpenView={setOpenView} task={task} />
     </>
   );
 }

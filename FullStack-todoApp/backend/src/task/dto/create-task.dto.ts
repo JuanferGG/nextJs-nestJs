@@ -50,9 +50,10 @@ export class CreateTaskDto {
   // TODO Imagen de la tarea
   @ApiProperty({
     description: 'The image of the task',
-    default: '/uploads/tasks/default_task.jpg',
+    type: 'string',
+    format: 'binary',
+    required: false
   })
   @IsOptional()
-  // @IsOptional()
   image?: Express.Multer.File | string;
 }

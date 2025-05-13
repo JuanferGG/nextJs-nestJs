@@ -13,7 +13,7 @@ import {
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from './config/multer.config';
 import { plainToInstance } from 'class-transformer';
@@ -36,6 +36,11 @@ export class TaskController {
       status: true,
       priority: 'low',
     },
+  })
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    type: CreateTaskDto,
+    description: 'Datos de la tarea con imagen opcional'
   })
   @Post()
   @UseInterceptors(FileInterceptor('image', multerConfig))

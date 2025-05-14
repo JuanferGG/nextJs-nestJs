@@ -13,7 +13,12 @@ import {
 import { TaskService } from './task.service';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { UpdateTaskDto } from './dto/update-task.dto';
-import { ApiBody, ApiConsumes, ApiOperation, ApiResponse } from '@nestjs/swagger';
+import {
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiResponse,
+} from '@nestjs/swagger';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { multerConfig } from './config/multer.config';
 import { plainToInstance } from 'class-transformer';
@@ -40,7 +45,7 @@ export class TaskController {
   @ApiConsumes('multipart/form-data')
   @ApiBody({
     type: CreateTaskDto,
-    description: 'Datos de la tarea con imagen opcional'
+    description: 'Datos de la tarea con imagen opcional',
   })
   @Post()
   @UseInterceptors(FileInterceptor('image', multerConfig))
@@ -104,14 +109,36 @@ export class TaskController {
 
   // TODO: Actualizar una tarea por id
   @ApiOperation({ summary: 'Actualiza toda la tarea mediante id' })
+  @ApiConsumes('multipart/form-data')
   @Patch(':id')
   @UseInterceptors(FileInterceptor('image', multerConfig))
-  update(
+  async update(
     @Param('id') id: string,
-    @Body() updateTaskDto: UpdateTaskDto,
+    @Body() body: any,
     @UploadedFile() image: Express.Multer.File,
   ) {
-    return this.taskService.update(id, updateTaskDto, image);
+    const dto = plainToInstance(UpdateTaskDto, body);
+    const errors = await validate(dto);
+
+    if (errors.length > 0) {
+      // ⚠️ Si hay errores, y Multer ya subió el archivo, lo borramos (opcional)
+      if (image?.path) {
+        // Usar 'fs' para eliminar la imagen subida por error
+        await unlink(image.path);
+      }
+
+      const formattedErrors = errors.flatMap((err) => {
+        return Object.entries(err.constraints || {}).map(([key, msg]) => ({
+          field: err.property,
+          type: key,
+          message: msg,
+        }));
+      });
+
+      throw new BadRequestException(formattedErrors);
+    }
+
+    return this.taskService.update(id, dto, image);
   }
 
   // TODO: Eliminar una tarea por id

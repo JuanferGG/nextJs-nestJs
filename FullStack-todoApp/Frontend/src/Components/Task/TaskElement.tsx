@@ -4,12 +4,14 @@ import { Dialog, DialogBackdrop, DialogPanel } from "@headlessui/react";
 import { useDeleteTask } from "../../Hooks/useTask";
 import { UiNotyf } from "../UI/Notyf";
 import TaskModalView from "./TaskModalView";
+import TaskModalEdit from "./TaskModalEdit";
 
 export default function TaskElement({ task }: { task: Task }) {
   const { mutate: deleteProduct } = useDeleteTask();
   const { _id, title, description, status, priority, image } = task;
   const [isOpen, setIsOpen] = useState(false);
   const [openView, setOpenView] = useState(false);
+  const [editView, setEditView] = useState(false);
 
   const handleDelete = () => {
     deleteProduct(_id, {
@@ -38,7 +40,7 @@ export default function TaskElement({ task }: { task: Task }) {
           />
         </div>
         <div className="p-5 flex flex-col gap-3 flex-grow">
-          <h2 className="text-2xl font-semibold capitalize text-gray-800">
+          <h2 className="text-2xl font-semibold capitalize text-gray-800 line-clamp-1">
             {title}
           </h2>
           <p className="text-gray-600 text-sm line-clamp-2">{description}</p>
@@ -83,6 +85,7 @@ export default function TaskElement({ task }: { task: Task }) {
             <button
               className="cursor-pointer px-4 py-2 font-semibold bg-blue-500/80
            text-white rounded-2xl hover:bg-blue-600 transition-colors duration-300"
+              onClick={() => setEditView(true)}
             >
               Editar
             </button>
@@ -96,7 +99,7 @@ export default function TaskElement({ task }: { task: Task }) {
           </div>
         </div>
       </div>
-      { /* TODO: Modal Delete */ }
+      {/* TODO: Modal Delete */}
       <Dialog open={isOpen} onClose={setIsOpen} className="relative z-10">
         <DialogBackdrop transition className="fixed inset-0 bg-gray-500/75" />
         <div className="modalPosition">
@@ -129,7 +132,17 @@ export default function TaskElement({ task }: { task: Task }) {
         </div>
       </Dialog>
       {/* TODO: Modal View */}
-      <TaskModalView IsOpenView={openView} setOpenView={setOpenView} task={task} />
+      <TaskModalView
+        IsOpenView={openView}
+        setOpenView={setOpenView}
+        task={task}
+      />
+      {/* TODO: Modal Edit */}
+      <TaskModalEdit
+        isOpenEdit={editView}
+        setOpenEdit={setEditView}
+        task={task}
+      />
     </>
   );
 }

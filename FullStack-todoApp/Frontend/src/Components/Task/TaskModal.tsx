@@ -87,7 +87,7 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
                     </DialogTitle>
                     <form onSubmit={handleSubmit} className="space-y-4 mt-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-xl/tight font-medium text-gray-700 mb-1">
                           Título
                         </label>
                         <input
@@ -102,7 +102,7 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-xl/tight font-medium text-gray-700 mb-1">
                           Descripción
                         </label>
                         <textarea
@@ -119,8 +119,8 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
                       </div>
 
                       <div className="flex items-center gap-2">
-                        <label className="text-sm font-medium text-gray-700">
-                          Estado
+                        <label className="font-semibold text-xl/tight text-gray-700">
+                          Estado:
                         </label>
                         <input
                           type="checkbox"
@@ -136,7 +136,7 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-xl/tight font-medium text-gray-700 mb-1">
                           Prioridad
                         </label>
                         <select
@@ -156,7 +156,7 @@ export default function TaskModal({ onTaskCreated }: TaskModalProps) {
                       </div>
 
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                        <label className="block text-xl/tight font-medium text-gray-700 mb-1">
                           Imagen
                         </label>
                         <input

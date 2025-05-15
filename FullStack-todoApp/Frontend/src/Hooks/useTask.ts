@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { createTask, deleteTask, getTasks } from "../api/Task";
+import { createTask, deleteTask, getTasks, updateTask } from "../api/Task";
 import { Task } from "../interfaces/Task";
 
 export const useTask = () => {
@@ -34,3 +34,19 @@ export const useDeleteTask = () => {
     }
   })
 }
+
+export const useUpdateTask = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, formData }: { id: string; formData: FormData }) => 
+      updateTask(id, formData),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["tasks"] });
+    },
+    onError: (error) => {
+      // Propagar el error para manejarlo en el componente
+      throw error;
+    }
+  });
+};

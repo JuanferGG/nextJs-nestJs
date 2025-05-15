@@ -29,8 +29,22 @@ export const deleteTask = async (id: string) => {
   return axios
     .delete(`/task/${id}`)
     .then((res) => res.data)
-   .catch((error) => {
+    .catch((error) => {
       console.log(error);
       throw error;
     });
-}
+};
+
+export const updateTask = async (id: string, formData: FormData) => {
+  return axios
+    .patch(`/task/${id}`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      }
+    })
+    .then((res) => res.data)
+    .catch((error) => {
+      console.log(error);
+      throw error;
+    });
+};

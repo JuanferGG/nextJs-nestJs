@@ -40,20 +40,20 @@ ORIGIN_CLIENT=http://localhost:5173
 1. Clona el repositorio
 2. Instala las dependencias:
 ```bash
-npm install
+pnpm install
 ```
 
 ### Ejecución
 
 Desarrollo:
 ```bash
-npm run start:dev
+pnpm run start:dev
 ```
 
 Producción:
 ```bash
-npm run build
-npm run start:prod
+pnpm run build
+pnpm run start:prod
 ```
 
 ## Características Principales
